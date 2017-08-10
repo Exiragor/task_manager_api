@@ -51,7 +51,6 @@ class Route {
 
         user.get("/profile", {_, res ->
 
-
         })
 
         return user
