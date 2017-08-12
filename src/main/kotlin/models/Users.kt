@@ -29,12 +29,6 @@ class Users : Model() {
         return Promise.resolve(result)
     }
 
-    fun loginUser(login: String, password: String) {
-        promiseAsync {
-            val user = findUser<Any>(login).await()
-        }
-    }
-
     fun <T> newUser(name: String, lastName:String, password: String, email: String): Promise<T> {
         var result: dynamic = null
 
