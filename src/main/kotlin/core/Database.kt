@@ -2,7 +2,6 @@ package core
 
 import require
 
-
 class Database {
     var pool: dynamic = null
     private val knex = require("knex")
@@ -15,10 +14,10 @@ class Database {
         pool = knex(object {
             val client = "mysql"
             val connection = object {
-                val host = "localhost"
-                val user = "root"
-                val password = "root"
-                val database = "task_manager"
+                val host = Config.config.get("db.hostname")
+                val user = Config.config.get("db.username")
+                val password = Config.config.get("db.password")
+                val database = Config.config.get("db.name")
             }
         })
     }
