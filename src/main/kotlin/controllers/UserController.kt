@@ -36,4 +36,8 @@ class UserController(req: dynamic, res: dynamic): Controller(req, res) {
             }
         }
     }
+
+    fun registration() {
+
+    }
 }
