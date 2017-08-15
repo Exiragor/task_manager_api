@@ -1,8 +1,10 @@
 package migrations
 
+import kotlin.js.Promise
 
-fun createUsers() {
-    db.tool.schema.createTableIfNotExists("users", fun (table: dynamic) {
+
+fun <T> createUsers(db: dynamic): Promise<T> {
+    val result = db.pool.schema.createTableIfNotExists("users", fun (table: dynamic) {
         table.increments()
         table.string("name", 100)
         table.string("last_name", 100)
@@ -11,5 +13,7 @@ fun createUsers() {
         table.string("secretKey", 100)
         table.string("avatar_path")
         table.timestamps()
-    });
+    })
+
+    return Promise.resolve(result)
 }

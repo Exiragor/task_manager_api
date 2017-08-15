@@ -8,6 +8,6 @@ fun main(args: Array<String>) {
     val port = config.get("port")
 
     val listen = app.tool.listen(port, {
-        println("Listening on port ${port}")
+        println("Listening on port $port")
     })
 }

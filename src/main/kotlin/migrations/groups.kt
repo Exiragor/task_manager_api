@@ -1,8 +1,10 @@
 package migrations
 
+import kotlin.js.Promise
 
-fun createGroups() {
-    db.tool.schema.createTableIfNotExists("groups", fun (table: dynamic) {
+
+fun <T> createGroups(db: dynamic): Promise<T> {
+    val res = db.pool.schema.createTableIfNotExists("groups", fun (table: dynamic) {
         table.increments()
         table.string("name", 100)
         table.string("type", 50)
@@ -10,4 +12,6 @@ fun createGroups() {
         table.string("icon")
         table.timestamps()
     })
+
+    return Promise.resolve(res)
 }

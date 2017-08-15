@@ -6,5 +6,6 @@
     "name": ""
   },
   "port": 4800,
-  "secretKey": "secretKey"
+  "secretKey": "secretKey",
+  "migration_pass": "pass"
 }

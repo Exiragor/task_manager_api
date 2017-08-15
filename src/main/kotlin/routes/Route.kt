@@ -1,35 +1,40 @@
 package routes
 
 import controllers.UserController
-import core.Async.Companion.promiseAsync
-import core.Async.Companion.await
+import core.Config
 import core.Database
-import models.Users
+import migrations.Migration
 import require
 
-
-//import require
 
 class Route {
     private val express: dynamic = require("express")
     private var router: dynamic = null
-    private var tempResult: Any = "kappa"
+    private var generalRoute: dynamic = null
 
     init {
+        generalRoute = express.Router()
         router = express.Router()
         router.use("/", MainRouter())
-        router.use("/auth", AuthRouter())
         router.use("/user", UserRouter())
+
+        generalRoute.use("/v1", router)
+        generalRoute.use("/auth", AuthRouter())
+        generalRoute.use("/migration", MigrationRouter())
     }
 
     fun getRouter(): dynamic {
-        return router
+        return generalRoute
     }
 
     private fun AuthRouter(): dynamic {
         val auth = express.Router()
         auth.get("/login", {_, res ->
             res.send("It's page for login")
+        })
+        auth.post("/registration", {req, res ->
+            val controller = UserController(req, res)
+            controller.registration()
         })
 
         return auth
@@ -49,14 +54,30 @@ class Route {
     private fun UserRouter(): dynamic {
         val user = express.Router()
 
-        user.get("/profile", {_, res ->
-
+        user.get("/profile", {req, res ->
+            val controller = UserController(req, res)
+            controller.getAllUsers()
         })
 
         return user
     }
 
+    private fun MigrationRouter(): dynamic {
+        val migration = express.Router()
 
+        migration.get("/create", {req, res ->
+            val pass = Config.config.get("migration_pass")
+
+            @Suppress("UnsafeCastFromDynamic")
+            if (pass == req.query.pass) {
+                val temp = Migration()
+                temp.create()
+            }
+            res.send("migration's page")
+        })
+
+        return migration
+    }
 
 }
 

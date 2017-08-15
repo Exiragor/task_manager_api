@@ -51,7 +51,7 @@ class Users : Model() {
         var result: dynamic = null
 
         try {
-            result = db.pool("users").select().where("login", login)
+            result = db.pool("users").select().where("email", login)
         }
         catch (e: Exception) {
             e.message
