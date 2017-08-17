@@ -29,8 +29,9 @@ class Route {
 
     private fun AuthRouter(): dynamic {
         val auth = express.Router()
-        auth.get("/login", {_, res ->
-            res.send("It's page for login")
+        auth.post("/login", {req, res ->
+            val controller = UserController(req, res)
+            controller.login()
         })
         auth.post("/registration", {req, res ->
             val controller = UserController(req, res)

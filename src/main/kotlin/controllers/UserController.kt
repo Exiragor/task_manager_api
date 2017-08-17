@@ -18,11 +18,10 @@ class UserController(req: dynamic, res: dynamic): Controller(req, res) {
     }
 
     fun login() {
-        promiseAsync {
-            var user: dynamic = model.findUser<Any>(req.body.login).await()
+        promiseAsync end@{
+            var user: dynamic = model.findUser<Any>(req.body.email).await()
             user = user[0]
             if (user != null) {
-                console.log(user)
                 if (passHash.verify(user.password, req.body.password)) {
                     response(object {
                         val status = true
@@ -30,18 +29,19 @@ class UserController(req: dynamic, res: dynamic): Controller(req, res) {
                         val firstName = user.name
                         val lastName = user.last_name
                     })
-                } else {
-                    response(object {
-                        val status = false
-                        val error = "Login or password is incorrect"
-                    })
+                    return@end
                 }
             }
+
+            response(object {
+                val status = false
+                val error = "Login or password is incorrect"
+            })
         }
     }
 
     fun registration() {
-        promiseAsync {
+        promiseAsync end@ {
             val name = req.body.name
             val lastName = req.body.last_name
             val email = req.body.email
@@ -52,7 +52,7 @@ class UserController(req: dynamic, res: dynamic): Controller(req, res) {
                     val status = false
                     val error = "Not all fields are complete"
                 })
-                false
+                return@end
             }
 
             val users: dynamic = model.findUser<Any>(email).await()
@@ -63,7 +63,7 @@ class UserController(req: dynamic, res: dynamic): Controller(req, res) {
                     val status = false
                     val error = "This email is unavailable"
                 })
-                false
+                return@end
             }
 
 
