@@ -5,6 +5,7 @@ import core.Config
 import core.Database
 import migrations.Migration
 import require
+import middlewares.checkToken
 
 
 class Route {
@@ -18,6 +19,10 @@ class Route {
         router.use("/", MainRouter())
         router.use("/user", UserRouter())
 
+
+        generalRoute.use("/v1", {req, res, next ->
+            checkToken(req, res, next)
+        })
         generalRoute.use("/v1", router)
         generalRoute.use("/auth", AuthRouter())
         generalRoute.use("/migration", MigrationRouter())

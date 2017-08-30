@@ -5,7 +5,7 @@ import kotlin.js.Promise
 import core.Async.Companion.await
 import core.Async.Companion.promiseAsync
 
-class Users : Model() {
+class User : Model() {
     var firstName: String = ""
     var age: Int = 0
     var lastName: String = ""
@@ -52,6 +52,25 @@ class Users : Model() {
 
         try {
             result = db.pool("users").select().where("email", login)
+        }
+        catch (e: Exception) {
+            e.message
+        }
+
+        return Promise.resolve(result)
+    }
+
+    fun <T> updateFields(id: Int, fields: dynamic): Promise<T> {
+        val result = db.pool("users").update(fields).where("id", id)
+
+        return Promise.resolve(result)
+    }
+
+    fun <T> findUser(id: Int): Promise<T> {
+        var result: dynamic = null
+
+        try {
+            result = db.pool("users").select().where("id", id)
         }
         catch (e: Exception) {
             e.message
