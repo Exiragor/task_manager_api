@@ -4,6 +4,7 @@ import core.Model
 import kotlin.js.Promise
 import core.Async.Companion.await
 import core.Async.Companion.promiseAsync
+import kotlin.js.Date
 
 class User : Model() {
     var firstName: String = ""
@@ -33,11 +34,13 @@ class User : Model() {
         var result: dynamic = null
 
         try {
+            val date = Date()
             result = db.pool("users").insert(object {
                 val name = name
                 val last_name = lastName
                 val password = password
                 val email = email
+                val created_at = date
             })
         }
         catch (e: Exception) {

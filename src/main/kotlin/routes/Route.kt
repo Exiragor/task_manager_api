@@ -17,7 +17,12 @@ class Route {
         generalRoute = express.Router()
         router = express.Router()
         router.use("/", MainRouter())
-        router.use("/user", UserRouter())
+//        router.use("/user", UserRouter())
+
+        router.get("/user/:id/", {req, res ->
+            val controller = UserController(req, res)
+            controller.getUser()
+        })
 
 
         generalRoute.use("/v1", {req, res, next ->
@@ -63,6 +68,11 @@ class Route {
         user.get("/profile", {req, res ->
             val controller = UserController(req, res)
             controller.getAllUsers()
+        })
+
+        user.get("/:id", {req, res ->
+            val controller = UserController(req, res)
+            controller.getUser()
         })
 
         return user

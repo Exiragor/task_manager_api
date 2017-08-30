@@ -35,7 +35,7 @@ class Token: Model() {
                 list.add(err)
                 list.add(decoded)
                 console.log(list)
-            }).await()
+            })
 
             return@end
         }

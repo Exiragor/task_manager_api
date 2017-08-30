@@ -96,4 +96,25 @@ class UserController(req: dynamic, res: dynamic): Controller(req, res) {
 
         }
     }
+
+    fun getUser() {
+        promiseAsync {
+            val id: Int = req.params.id
+            var user: dynamic = model.findUser<Any>(id).await()
+
+            user = user[0]
+            response(object {
+                val status = true
+                val user = object {
+                    val id = user.id
+                    val name = user.name
+                    val last_name = user.last_name
+                    val email = user.email
+                    val avatar_path = user.avatar_path
+                    val created_at = user.created_at
+                    val updated_at = user.updated_at
+                }
+            })
+        }
+    }
 }
