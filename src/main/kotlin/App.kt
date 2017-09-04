@@ -1,4 +1,5 @@
 import routes.Route
+import routes.initRouter
 
 class App {
     val express: dynamic = require("express")
@@ -19,8 +20,7 @@ class App {
     }
 
     private fun RouteOn() {
-        val route = Route()
-        tool.use(route.getRouter())
+        tool.use("/v1", initRouter())
     }
 
 }
